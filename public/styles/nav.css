@@ -10,6 +10,11 @@ nav {
   position: fixed
 }
 
-.left {
+.nav-left {
   font-family: 'Bungee', cursive;
+}
+.nav-right{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
