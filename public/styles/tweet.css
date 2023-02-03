@@ -8,7 +8,10 @@
   transform: scale(1.01);
   cursor: pointer;
 } */
-
+.old-tweet {
+  width: 100%;
+  background-color: transparent;
+}
 article.tweet {
   width: 100%;
   margin-bottom: 0.5em;
@@ -19,14 +22,7 @@ article.tweet {
   border: 6px solid #545149;
 }
 
-article.tweet:hover {
-  box-shadow: 5px 5px 5px #b6b5b3ec;
-  -webkit-transform: scale(1.01);
-  transform: scale(1.01);
-  transition: 150ms ease;
-}
-
-article.tweet header {
+.tweet-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

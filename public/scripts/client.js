@@ -14,7 +14,7 @@ const escape = function (str) {
 const createTweetElement = function(tweet) {
   //const timePassed = timeago.format(tweet.created_at);  
   const $tweet = `<article class="tweet">
-  <header>
+  <div class="tweet-header">
     <div class="tweet-header-left">
       <img src=${tweet.user.avatars}/>
       <span>${tweet.user.name}</span>
@@ -22,7 +22,7 @@ const createTweetElement = function(tweet) {
     <div class="tweet-header-right" >
       <spanD>${tweet.user.handle}</span>
     </div>
-    </header>
+    </div>
     <div class="tweet-text">
       <p>${escape(tweet.content.text)}</p>
     </div>
