@@ -28,7 +28,7 @@ const data = [
     },
     "created_at": 1461113959088
   }
-]
+];
 
 const renderTweets = function(tweets) {
 // loops through tweets
@@ -38,37 +38,54 @@ const renderTweets = function(tweets) {
     const aTweet = createTweetElement(tweet);
     $('#tweets-container').append(aTweet);
   }
-}
+};
 
 const createTweetElement = function(tweet) {
   const timePassed = timeago.format(tweet.created_at);  
-  const $tweet = `
-  <article class="tweet">
-    <header>
-      <div class="tweet-header-left">
-        <img src=${tweet.user.avatars}/>
-        <span>${tweet.user.name}</span>
+  const $tweet = `<article class="tweet">
+  <header>
+    <div class="tweet-header-left">
+      <img src=${tweet.user.avatars}/>
+      <span>${tweet.user.name}</span>
+    </div>
+    <div class="tweet-header-right" >
+      <span>${tweet.user.handle}</span>
+    </div>
+    </header>
+    <div class="tweet-text">
+      <p>${secureInput(tweet.content.text)}</p>
+    </div>
+    <footer>
+    <div class="tweet-footer-left">
+      <p>${timePassed}</p>
+    </div>
+      <div class="tweet-footer-right">
+        <i id="flag" class="fa-solid fa-flag"></i>
+        <i id="retweet" class="fa-solid fa-retweet"></i>            
+        <i id="heart" class="fa-solid fa-heart"></i>
       </div>
-      <div class="tweet-header-right" >
-        <span>${tweet.user.handle}</span>
-      </div>
-      </header>
-      <div class="tweet-text">
-        <p>${secureInput(tweet.content.text)}</p>
-      </div>
-      <footer>
-      <div class="tweet-footer-left">
-        <p>${timePassed}</p>
-      </div>
-        <div class="tweet-footer-right">
-          <i id="flag" class="fa-solid fa-flag"></i>
-          <i id="retweet" class="fa-solid fa-retweet"></i>            
-          <i id="heart" class="fa-solid fa-heart"></i>
-        </div>
-      </footer>
-    </article>`;
+    </footer>
+  </article>`;
 
   return $tweet;
 };
 
-renderTweets(data);
+const loadTweets = function() {
+  $.getJSON("/tweets/", function(data) {
+    renderTweets(data);
+  });
+};
+
+$(function() {
+  
+  $(".new-tweet-box").on('submit', function(event) {
+    
+    console.log("hello");
+    event.preventDefault();
+    const $newTweet = $(this).serialize();
+    $.post("/tweets/", $newTweet, function() {
+      loadTweets();
+    });
+  });
+});
+

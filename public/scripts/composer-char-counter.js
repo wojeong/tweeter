@@ -7,7 +7,7 @@ $(document).ready(function() {
     console.log($(this).parent().parent());//Maybe not the most ideal way
     
     $(".counter").html(140 - countChar);
-  
+    
   })
 
 });
