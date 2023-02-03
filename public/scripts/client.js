@@ -5,6 +5,12 @@
  */
 
 // Test / driver code (temporary). Eventually will get this from the server.
+const escape = function (str) {
+  let div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
+
 const data = [
   {
     "user": {
@@ -30,16 +36,6 @@ const data = [
   }
 ];
 
-const renderTweets = function(tweets) {
-// loops through tweets
-// calls createTweetElement for each tweet
-// takes return value and appends it to the tweets container
-  for (const tweet of tweets) {
-    const aTweet = createTweetElement(tweet);
-    $('#tweets-container').append(aTweet);
-  }
-};
-
 const createTweetElement = function(tweet) {
   const timePassed = timeago.format(tweet.created_at);  
   const $tweet = `<article class="tweet">
@@ -53,7 +49,7 @@ const createTweetElement = function(tweet) {
     </div>
     </header>
     <div class="tweet-text">
-      <p>${secureInput(tweet.content.text)}</p>
+      <p>${escape(tweet.content.text)}</p>
     </div>
     <footer>
     <div class="tweet-footer-left">
@@ -69,23 +65,48 @@ const createTweetElement = function(tweet) {
 
   return $tweet;
 };
+$(document).ready(function() {
+
+
+
+
+const renderTweets = function(tweets) {
+  // loops through tweets
+  // calls createTweetElement for each tweet
+  // takes return value and appends it to the tweets container
+  console.log("running renderTweets");
+  for (const tweet of tweets) {
+    const aTweet = createTweetElement(tweet);
+    console.log(aTweet);
+    $('.old-tweet').append(aTweet);
+  }
+};
+
+
+
+// const $button = $('#new-tweet-box');
+// $button.on('click', funtion() {
+//   console.log("Hello");
+// });
 
 const loadTweets = function() {
-  $.getJSON("/tweets/", function(data) {
-    renderTweets(data);
+  $.ajax({
+    url: '/tweets',
+    method: 'GET'
+  }).then(function() {
+    console.log("Hello");
   });
 };
 
-$(function() {
-  
-  $(".new-tweet-box").on('submit', function(event) {
-    
-    console.log("hello");
-    event.preventDefault();
-    const $newTweet = $(this).serialize();
-    $.post("/tweets/", $newTweet, function() {
-      loadTweets();
-    });
+$(".new-tweet-box").submit(function(event) {
+  event.preventDefault();
+  $.ajax({
+    url: '/tweets',
+    method: 'POST',
+    data: $(this).serialize()
+  }).then(function() {
+    console.log(data);
+    $(".old-tweet").empty();
   });
 });
-
+});
