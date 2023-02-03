@@ -37,7 +37,7 @@ const data = [
 ];
 
 const createTweetElement = function(tweet) {
-  const timePassed = timeago.format(tweet.created_at);  
+  //const timePassed = timeago.format(tweet.created_at);  
   const $tweet = `<article class="tweet">
   <header>
     <div class="tweet-header-left">
@@ -45,7 +45,7 @@ const createTweetElement = function(tweet) {
       <span>${tweet.user.name}</span>
     </div>
     <div class="tweet-header-right" >
-      <span>${tweet.user.handle}</span>
+      <spanD>${tweet.user.handle}</span>
     </div>
     </header>
     <div class="tweet-text">
@@ -53,7 +53,7 @@ const createTweetElement = function(tweet) {
     </div>
     <footer>
     <div class="tweet-footer-left">
-      <p>${timePassed}</p>
+      <p>TIME</p>
     </div>
       <div class="tweet-footer-right">
         <i id="flag" class="fa-solid fa-flag"></i>
@@ -78,24 +78,15 @@ const renderTweets = function(tweets) {
   for (const tweet of tweets) {
     const aTweet = createTweetElement(tweet);
     console.log(aTweet);
-    $('.old-tweet').append(aTweet);
+    $('.old-tweet').prepend(aTweet);
   }
 };
-
-
-
-// const $button = $('#new-tweet-box');
-// $button.on('click', funtion() {
-//   console.log("Hello");
-// });
 
 const loadTweets = function() {
   $.ajax({
     url: '/tweets',
     method: 'GET'
-  }).then(function() {
-    console.log("Hello");
-  });
+  }).then(result => renderTweets(result));
 };
 
 $(".new-tweet-box").submit(function(event) {
@@ -105,8 +96,9 @@ $(".new-tweet-box").submit(function(event) {
     method: 'POST',
     data: $(this).serialize()
   }).then(function() {
-    console.log(data);
     $(".old-tweet").empty();
+    loadTweets();
   });
 });
+
 });
