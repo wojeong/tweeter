@@ -65,6 +65,7 @@ const createTweetElement = function(tweet) {
 
   return $tweet;
 };
+
 $(document).ready(function() {
 
 
@@ -74,10 +75,8 @@ const renderTweets = function(tweets) {
   // loops through tweets
   // calls createTweetElement for each tweet
   // takes return value and appends it to the tweets container
-  console.log("running renderTweets");
   for (const tweet of tweets) {
     const aTweet = createTweetElement(tweet);
-    console.log(aTweet);
     $('.old-tweet').prepend(aTweet);
   }
 };
@@ -89,14 +88,26 @@ const loadTweets = function() {
   }).then(result => renderTweets(result));
 };
 
+
 $(".new-tweet-box").submit(function(event) {
   event.preventDefault();
+  const tweetLength = $("#tweet-text").val().length;
+    
+  if (tweetLength > 140) {
+    $(".alert")
+      .empty()
+      .append("<p>Your message is too long</p>")
+  } else if (tweetLength === 0) {
+    return alert("You didn't write anything");
+  }
+
   $.ajax({
     url: '/tweets',
     method: 'POST',
     data: $(this).serialize()
   }).then(function() {
     $(".old-tweet").empty();
+    $("#tweet-text").val("");
     loadTweets();
   });
 });
