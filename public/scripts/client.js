@@ -11,31 +11,6 @@ const escape = function (str) {
   return div.innerHTML;
 };
 
-const data = [
-  {
-    "user": {
-      "name": "Newton",
-      "avatars": "https://i.imgur.com/73hZDYK.png"
-      ,
-      "handle": "@SirIsaac"
-    },
-    "content": {
-      "text": "If I have seen further it is by standing on the shoulders of giants"
-    },
-    "created_at": 1461116232227
-  },
-  {
-    "user": {
-      "name": "Descartes",
-      "avatars": "https://i.imgur.com/nlhLi3I.png",
-      "handle": "@rd" },
-    "content": {
-      "text": "Je pense , donc je suis"
-    },
-    "created_at": 1461113959088
-  }
-];
-
 const createTweetElement = function(tweet) {
   //const timePassed = timeago.format(tweet.created_at);  
   const $tweet = `<article class="tweet">
@@ -66,10 +41,8 @@ const createTweetElement = function(tweet) {
   return $tweet;
 };
 
+
 $(document).ready(function() {
-
-
-
 
 const renderTweets = function(tweets) {
   // loops through tweets
@@ -96,20 +69,26 @@ $(".new-tweet-box").submit(function(event) {
   if (tweetLength > 140) {
     $(".alert")
       .empty()
-      .append("<p>Your message is too long</p>")
+      .append("<p>Your message is too long</p>");
+    $(".alert").hide().slideDown('slow');
   } else if (tweetLength === 0) {
-    return alert("You didn't write anything");
+    $(".alert")
+      .empty()
+      .append("<p>You did not write anything</p>");
+    $(".alert").hide().slideDown('slow');
+  } else {
+    $.ajax({
+      url: '/tweets',
+      method: 'POST',
+      data: $(this).serialize()
+    }).then(function() {
+      $(".old-tweet").empty();
+      $("#tweet-text").val("");
+      loadTweets();
+    });
   }
-
-  $.ajax({
-    url: '/tweets',
-    method: 'POST',
-    data: $(this).serialize()
-  }).then(function() {
-    $(".old-tweet").empty();
-    $("#tweet-text").val("");
-    loadTweets();
-  });
+  
 });
+loadTweets();
 
 });
