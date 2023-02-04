@@ -1,13 +1,3 @@
-#tweets-container {
-  width: 100%;
-}
-
-/* #tweets-container:hover {
-  box-shadow: 5px 5px 5px #b6b5b3ec;
-  -webkit-transform: scale(1.01);
-  transform: scale(1.01);
-  cursor: pointer;
-} */
 .old-tweet {
   width: 100%;
   background-color: transparent;

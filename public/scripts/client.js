@@ -90,6 +90,7 @@ $(".new-tweet-box").submit(function(event) {
       $(".old-tweet").empty();
       $("#tweet-text").val("");
       $(".counter").val(140);
+      $(".alert").empty();
       loadTweets();
     });
   }
