@@ -45,9 +45,6 @@ const createTweetElement = function(tweet) {
 $(document).ready(function() {
 
 const renderTweets = function(tweets) {
-  // loops through tweets
-  // calls createTweetElement for each tweet
-  // takes return value and appends it to the tweets container
   for (const tweet of tweets) {
     const aTweet = createTweetElement(tweet);
     $('.old-tweet').prepend(aTweet);
@@ -65,7 +62,11 @@ const loadTweets = function() {
 $(".new-tweet-box").submit(function(event) {
   event.preventDefault();
   const tweetLength = $("#tweet-text").val().length;
-    
+  /**
+   * Validation Process
+   * If the length of tweet user tries to submit does not meet the validation
+   * It shows error message.
+   *  */  
   if (tweetLength > 140) {
     $(".alert")
       .empty()
@@ -77,6 +78,10 @@ $(".new-tweet-box").submit(function(event) {
       .append("<p>You did not write anything</p>");
     $(".alert").hide().slideDown('slow');
   } else {
+    /**
+     * If user inputs a valid tweet,
+     * load tweet and clean up the tweet window to recieve new tweets.
+     */
     $.ajax({
       url: '/tweets',
       method: 'POST',
@@ -84,6 +89,7 @@ $(".new-tweet-box").submit(function(event) {
     }).then(function() {
       $(".old-tweet").empty();
       $("#tweet-text").val("");
+      $(".counter").val(140);
       loadTweets();
     });
   }

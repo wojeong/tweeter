@@ -40,4 +40,12 @@ main {
 
  @media only screen and (min-width: 768px) and (max-width: 1024px) {
   /* Write Tablet only CSS here */
+  body {
+    display: flex;
+    flex-direction: column;
+  
+  }
+  main {
+    margin-top: 0px;
+  }
 }
